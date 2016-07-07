@@ -5,7 +5,7 @@
 
 3.导出LPK.dll文件，劫持系统目录提权
 
-#4.写启动项有问题，已经注释掉 
+4.写启动项有问题，已经注释掉 
 
 UDf will make the user 'guest' active and add to admin with the pass 789456123+abc
 The sql of Dumping AddUser And AddToAdmin MOF File has queried OK.
