@@ -1,6 +1,6 @@
 #coding:UTF-8
 #Using for mysql promote privileges
-#Author v5est0r http://wwww.zi0n.cn
+#Author v5est0r http://wwww.binghesec.cn
 
 import pymysql,os,ConfigParser
 import sys
