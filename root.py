@@ -118,7 +118,7 @@ def udf_dump():
     ver_float = str[0:3]
 
     # 根据MySQL版本不同确定导出的DLL路径
-    if float(ver_float) > 5.0:
+    if float(ver_float) >= 5.0:
         pluginpath = mysql_rootpath + "lib/plugin/"
         dllpath = mysql_rootpath + "lib/plugin/BingheSec.dll"
     else:
